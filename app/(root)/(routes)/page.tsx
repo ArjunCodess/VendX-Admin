@@ -20,9 +20,5 @@ export default function Page() {
         if (!isOpen) onOpen();
     }, [onOpen, isOpen]);
 
-    return (
-        <div className='p-4'>
-            <UserButton />
-        </div>
-    )
+    return null;
 }

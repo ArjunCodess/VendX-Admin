@@ -11,10 +11,12 @@ import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
-
+import { useRouter } from 'next/navigation'
 
 export const StoreModal = () => {
     const [loading, setLoading] = useState(false);
+
+    const router = useRouter()
 
     const formSchema = z.object({
         name: z.string().min(1),
@@ -32,13 +34,14 @@ export const StoreModal = () => {
             setLoading(true);
 
             const response = await axios.post('/api/stores', values);
-            window.location.assign(`/${response.data.id}`);
 
             toast.success("Store created successfully");
+
+            router.push(`/dashboard/${response.data.id}`);
         }
 
         catch (err) {
-            toast.error(`Something went Wrong ${err}`);
+            toast.error(`Something went wrong: ${err}`);
         }
 
         finally {
@@ -77,11 +80,8 @@ export const StoreModal = () => {
                                 )}
                             />
                             <div className='flex items-center justify-end w-full pt-6 space-x-2'>
-                                <Button
-                                    disabled={loading}
-                                    variant="outline"
-                                    onClick={storeModal.onClose}>Cancel</Button>
-                                <Button disabled={loading} type='submit' >Continue</Button>
+                                <Button disabled={loading} variant="outline" onClick={storeModal.onClose}>Cancel</Button>
+                                <Button disabled={loading} type='submit'>Continue</Button>
                             </div>
                         </form>
                     </Form>
