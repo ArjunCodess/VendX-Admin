@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import db from '@/db/drizzle';
-import { stores } from '@/db/schema';
+import { stores } from '@/db/schema/stores';
 import { and, eq } from "drizzle-orm";
 
 interface DashboardType {
@@ -17,7 +17,7 @@ export default async function DashboardLayout({ children, params }: DashboardTyp
 
     if (!userId) redirect('/sign-in')
 
-    const store = await db.select().from(stores).where(and(eq(stores.id, storeId), eq(stores.userId, userId)));
+    const store = await db.select().from(stores).where(and(eq(stores.id, storeId), eq(stores.userId, userId))).limit(1).execute();
 
     if (!store) redirect('/');
 

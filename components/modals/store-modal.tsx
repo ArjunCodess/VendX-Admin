@@ -37,7 +37,7 @@ export const StoreModal = () => {
 
             toast.success("Store created successfully");
 
-            router.push(`/dashboard/${response.data.id}`);
+            window.location.assign(`/${response.data.id}`);
         }
 
         catch (err) {

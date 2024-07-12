@@ -1,9 +1,9 @@
 'use client'
 
 import { useStoreModal } from '@/hooks/use-store-modal'
-import { useAuth, UserButton } from '@clerk/nextjs'
+import { useAuth } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 export default function Page() {
     const { isSignedIn } = useAuth();

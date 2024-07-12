@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import db from "@/db/drizzle";
-import { stores } from "@/db/schema";
+import { stores } from "@/db/schema/stores";
 import { eq } from 'drizzle-orm';
 
 interface DashboardType {

@@ -6,7 +6,7 @@ import StoreSwitcher from '@/components/StoreSwitcher';
 import { redirect } from 'next/navigation';
 import ThemeToggle from '@/components/ThemeToggle';
 import db from '@/db/drizzle';
-import { stores } from '@/db/schema';
+import { stores } from '@/db/schema/stores';
 import { eq } from 'drizzle-orm';
 
 export default async function Navbar() {

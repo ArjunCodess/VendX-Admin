@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import db from '@/db/drizzle';
-import { stores } from '@/db/schema';
+import { stores } from '@/db/schema/stores';
 
 export async function POST(req: Request) {
     try {
