@@ -1,5 +1,3 @@
-"use client"
-
 import * as z from 'zod'
 import { Modal } from "@/components/ui/modal"
 import { useStoreModal } from '@/hooks/use-store-modal';
@@ -11,12 +9,9 @@ import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
-import { useRouter } from 'next/navigation'
 
 export const StoreModal = () => {
     const [loading, setLoading] = useState(false);
-
-    const router = useRouter()
 
     const formSchema = z.object({
         name: z.string().min(1),
