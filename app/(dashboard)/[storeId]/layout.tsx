@@ -12,19 +12,32 @@ interface DashboardType {
 
 export default async function DashboardLayout({ children, params }: DashboardType) {
     const { userId } = auth();
-
     const storeId = params.storeId;
 
-    if (!userId) redirect('/sign-in')
+    if (!userId) return redirect('/sign-in');
 
-    const store = await db.select().from(stores).where(and(eq(stores.id, storeId), eq(stores.userId, userId))).limit(1).execute();
+    try {
+        const store = await db
+            .select()
+            .from(stores)
+            .where(and(eq(stores.id, storeId), eq(stores.userId, userId)))
+            .limit(1)
+            .execute();
 
-    if (!store) redirect('/');
+        if (!store) {
+            return redirect('/');
+        }
 
-    return (
-        <>
-            <Navbar />
-            {children}
-        </>
-    )
+        return (
+            <>
+                <Navbar />
+                {children}
+            </>
+        );
+    }
+    
+    catch (error) {
+        console.error('Error fetching store: ', error);
+        return redirect('/');
+    }
 }
