@@ -56,8 +56,8 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
             if (initialData) await axios.patch(`/api/${params.storeId}/sizes/${params.sizeId}`, data)
             else await axios.post(`/api/${params.storeId}/sizes`, data)
 
-            router.refresh();
             router.push(`/${params.storeId}/sizes`)
+            router.refresh();
             toast.success(toastMessage);
         }
 

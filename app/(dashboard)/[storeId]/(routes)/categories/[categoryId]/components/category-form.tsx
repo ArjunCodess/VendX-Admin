@@ -62,8 +62,8 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, billboa
             if (initialData) await axios.patch(`/api/${params.storeId}/categories/${params.categoryId}`, data)
             else await axios.post(`/api/${params.storeId}/categories`, data)
 
-            router.refresh();
             router.push(`/${params.storeId}/categories`)
+            router.refresh();
             toast.success(toastMessage);
         }
 
@@ -82,8 +82,8 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, billboa
 
             await axios.delete(`/api/${params.storeId}/categories/${params.categoryId}`)
 
-            router.refresh();
             router.push("/")
+            router.refresh();
             toast.success("Category deleted.")
         }
 
