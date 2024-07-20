@@ -76,8 +76,8 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
 
             await axios.delete(`/api/${params.storeId}/sizes/${params.sizeId}`)
 
-            router.refresh();
             router.push("/")
+            router.refresh();
             toast.success("Size deleted.")
         }
 

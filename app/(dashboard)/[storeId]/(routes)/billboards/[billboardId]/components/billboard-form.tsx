@@ -34,7 +34,6 @@ const formSchema = z.object({
 type BillboardFormValues = z.infer<typeof formSchema>;
 
 export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
-
     const params = useParams();
     const router = useRouter();
 
