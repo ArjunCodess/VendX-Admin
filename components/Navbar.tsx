@@ -14,7 +14,10 @@ export default async function Navbar() {
 
     if (!userId) redirect("/sign-in");
 
-    const userStores = await db.select().from(stores).where(eq(stores.userId, userId));
+    const userStores = await db
+        .select()
+        .from(stores)
+        .where(eq(stores.userId, userId));
 
     return (
         <div className='border-b'>

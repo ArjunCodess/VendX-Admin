@@ -1,8 +1,8 @@
-import * as z from 'zod'
-import { Modal } from "@/components/ui/modal"
+import * as z from 'zod';
+import { Modal } from "@/components/ui/modal";
 import { useStoreModal } from '@/hooks/use-store-modal';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod'
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -14,7 +14,7 @@ export const StoreModal = () => {
     const [loading, setLoading] = useState(false);
 
     const formSchema = z.object({
-        name: z.string().min(1),
+        name: z.string().min(1, "Name is required"),
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -33,13 +33,9 @@ export const StoreModal = () => {
             toast.success("Store created successfully");
 
             window.location.assign(`/${response.data.id}`);
-        }
-
-        catch (err) {
-            toast.error(`Something went wrong: ${err}`);
-        }
-
-        finally {
+        } catch (err: any) {
+            toast.error(`Something went wrong: ${err?.message || 'Unknown error'}`);
+        } finally {
             setLoading(false);
         }
     }
@@ -83,5 +79,5 @@ export const StoreModal = () => {
                 </div>
             </div>
         </Modal>
-    )
+    );
 }

@@ -31,7 +31,7 @@ export default function StoreSwitcher({ className, items = [] }: StoreSwitcherPr
     const [open, setOpen] = useState(false);
 
     const onStoreSelect = (store: { value: string, label: string }) => {
-        setOpen(true);
+        setOpen(false);
         router.push(`/${store.value}`);
     };
 
@@ -54,7 +54,7 @@ export default function StoreSwitcher({ className, items = [] }: StoreSwitcherPr
                                 <CommandItem key={index} onSelect={() => onStoreSelect(store)} className="text-sm">
                                     <StoreIcon className="w-4 h-4 mr-2" />
                                     <p className="">{store.label}</p>
-                                    <Check className={cn("ml-auto h-4 w-4 ", currentStore?.value == store.value ? "opacity-100" : "opacity-0")} />
+                                    <Check className={cn("ml-auto h-4 w-4", currentStore?.value == store.value ? "opacity-100" : "opacity-0")} />
                                 </CommandItem>
                             ))}
                         </CommandGroup>
