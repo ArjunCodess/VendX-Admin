@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# VendX
 
-## Getting Started
+## Introduction
 
-First, run the development server:
+Welcome to VendX: the E-Commerce Website Template with an Admin Panel!
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+This application provides a complete solution for managing and displaying products, categories, and orders, complete with user authentication and a fully functional admin dashboard.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+> **NOTE**: This project is based on a tutorial by Code With Antonio (https://youtu.be/5miHyP6lExg). 
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+> Please note that this project is not an exact replica of the one shown in the video due to differences in the tech stack:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+> Next.js 13 → Next.js 14 | Prisma → Drizzle | Recharts → shadcn/ui charts
 
-## Learn More
+> This project was created primarily to learn Drizzle, but it also serves as a comprehensive e-commerce template.
 
-To learn more about Next.js, take a look at the following resources:
+## Table of Contents
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. ✅ Environment Setup (Admin)
+2. ✅ Clerk Authentication (Admin)
+3. ✅ Modal Components (Admin)
+4. ✅ Form Components (Admin)
+5. ✅ Drizzle ORM, Neon, MySQL Setup (Admin)
+6. ✅ Dashboard Setup (Admin)
+7. ✅ Navigation Bar (Admin)
+8. ✅ Settings Page (Admin)
+9. ✅ Billboards Entity (Admin)
+10. ✅ Data Table (Admin)
+11. ✅ Categories Entity (Admin)
+12. ✅ Sizes Entity (Admin)
+13. ✅ Colors Entity (Admin)
+14. ✅ Products Entity (Admin)
+15. ✅ Orders Entity (Admin)
+16. ✅ Environment Setup & Featured Products (Store)
+17. ✅ Individual Product Screen (Store)
+18. ✅ Individual Category Screen (Store)
+19. ✅ Product Preview Modal Components (Store)
+20. ✅ Add to Cart Functionality (Store)
+21. ✅ Checkout Functionality (Admin, Store)
+22. ✅ Dashboard Page (Admin)
+23. ✅ Dark Mode (Admin)
+24. ✅ Deployment to Vercel (Admin, Store)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Features Yet to Be Implemented
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Multiple Images for Products
+2. A REAL Payment Flow (use `isPaid: true` for queries in the dashboard)
+3. Multiple Stores per User Functionality
+4. Use `isArchived: true` Property in the Dashboard

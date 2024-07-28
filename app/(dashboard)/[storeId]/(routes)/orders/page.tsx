@@ -4,23 +4,62 @@ import { OrderColumn } from './components/columns';
 import { formatter } from '@/lib/utils';
 import db from '@/db/drizzle';
 import { desc, eq } from 'drizzle-orm';
-import { orders, orderItems, products } from '@/db/schema';
+import { orders, orderItems, products, colors, sizes } from '@/db/schema';
 
 const OrdersPage = async ({ params }: { params: { storeId: string } }) => {
-    const fetchedOrders: any = await db
-        .select()
+    const fetchedOrders = await db
+        .select({
+            id: orders.id,
+            phone: orders.phone,
+            address: orders.address,
+            createdAt: orders.createdAt,
+            isPaid: orders.isPaid,
+            productId: products.id,
+            productName: products.name,
+            productPrice: products.price,
+            colorName: colors.name,
+            sizeName: sizes.name,
+        })
         .from(orders)
+        .leftJoin(orderItems, eq(orderItems.orderId, orders.id))
+        .leftJoin(products, eq(orderItems.productId, products.id))
+        .leftJoin(colors, eq(products.colorId, colors.id))
+        .leftJoin(sizes, eq(products.sizeId, sizes.id))
         .where(eq(orders.storeId, params.storeId))
-        .orderBy(desc(orders.createdAt));
+        .orderBy(desc(orders.createdAt))
+        .execute();
 
-    const formattedOrders: OrderColumn[] = fetchedOrders.map((item: any) => ({
-        id: item.id,
-        phone: item.phone,
-        address: item.address,
-        products: item.orderItems.map((orderItem: typeof orderItems) => orderItem.productId).join(', '),
-        totalPrice: formatter.format(item.orderItems.reduce((total: any, item: any) => total + Number(item.product.price), 0)),
-        isPaid: item.isPaid,
-        createdAt: format(item.createdAt!, "MMMM do, yyyy"),
+    const ordersGroupedById = fetchedOrders.reduce<Record<string, any>>((acc, item) => {
+        if (!acc[item.id]) {
+            acc[item.id] = {
+                id: item.id,
+                phone: item.phone,
+                address: item.address,
+                isPaid: item.isPaid,
+                createdAt: item.createdAt,
+                products: [],
+            };
+        }
+
+        acc[item.id].products.push({
+            productId: item.productId,
+            productName: `${item.productName}(${item.colorName}, ${item.sizeName})`,
+            productPrice: item.productPrice,
+        });
+
+        return acc;
+    }, {});
+
+    const formattedOrders: OrderColumn[] = Object.values(ordersGroupedById).map((order: any) => ({
+        id: order.id,
+        phone: order.phone,
+        address: order.address,
+        products: order.products.map((product: any) => product.productName).join(', '),
+        totalPrice: formatter.format(
+            order.products.reduce((total: number, product: any) => total + Number(product.productPrice), 0)
+        ),
+        isPaid: order.isPaid,
+        createdAt: format(order.createdAt!, "MMMM do, yyyy"),
     }));
 
     return (
@@ -30,6 +69,6 @@ const OrdersPage = async ({ params }: { params: { storeId: string } }) => {
             </div>
         </div>
     );
-}
+};
 
 export default OrdersPage;

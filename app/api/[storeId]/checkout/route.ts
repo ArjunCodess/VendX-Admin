@@ -1,69 +1,66 @@
-import { NextResponse } from "next/server";
 import db from "@/db/drizzle";
-import { products, orders, orderItems } from "@/db/schema";
-import { inArray } from "drizzle-orm";
+import { NextResponse } from "next/server";
+import { orders, orderItems, products, colors, sizes } from "@/db/schema";
+import { inArray, eq } from "drizzle-orm";
 
-// Define CORS headers
 const corsHeaders = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
 
-// Handle OPTIONS request for CORS preflight
 export async function OPTIONS() {
     return NextResponse.json({}, { headers: corsHeaders });
 }
 
-// Handle POST request for creating an order
 export async function POST(req: Request, { params }: { params: { storeId: string } }) {
     try {
-        // Parse the incoming request to get product IDs
-        const { productIds } = await req.json();
+        const { productIds, phone, address } = await req.json();
 
-        // Check if product IDs are provided
-        if (!productIds || productIds.length === 0) {
-            return new NextResponse("Product ids are required", { status: 400 });
-        }
+        if (!productIds || productIds.length === 0) return new NextResponse("Product ids are required", { status: 400 });
 
-        // Fetch the products from the database using Drizzle ORM
-        const selectedProducts = await db.select()
+        const productRecords = await db
+            .select({
+                productId: products.id,
+                productName: products.name,
+                colorName: colors.name,
+                sizeName: sizes.name,
+            })
             .from(products)
+            .leftJoin(colors, eq(products.colorId, colors.id))
+            .leftJoin(sizes, eq(products.sizeId, sizes.id))
             .where(inArray(products.id, productIds))
             .execute();
 
-        // Check if all products exist
-        if (selectedProducts.length !== productIds.length) {
-            return new NextResponse("Some product ids are invalid", { status: 400 });
-        }
+        if (productRecords.length === 0) return new NextResponse("No products found with the provided IDs", { status: 404 });
 
-        // Create the order in the database using Drizzle ORM
-        const [order] = await db.insert(orders).values({
-            storeId: params.storeId,
-            isPaid: false,
-        }).returning().execute();
+        const [newOrder] = await db
+            .insert(orders)
+            .values({
+                storeId: params.storeId,
+                isPaid: false,
+                phone: phone || '',
+                address: address || '',
+            })
+            .returning()
+            .execute();
 
-        // Map the product IDs to create order items
-        const orderItemsData = selectedProducts.map((product) => ({
-            orderId: order.id,
-            productId: product.id,
-            quantity: 1,
+        const orderItemsData = productRecords.map((product) => ({
+            orderId: newOrder.id,
+            productId: product.productId,
+            productName: `${product.productName}(${product.colorName}, ${product.sizeName})`, // Format ProductName(Color, Size)
         }));
 
-        // Insert order items into the database using Drizzle ORM
         await db.insert(orderItems).values(orderItemsData).execute();
 
-        // Return a response indicating the order was successfully created
-        return NextResponse.json(
-            { message: "Order created successfully", orderId: order.id },
-            { headers: corsHeaders }
-        );
-
-    } catch (error: any) {
-        // Handle any errors that occur during the order creation process
-        console.error("Error creating order:", error);
-        return new NextResponse("Internal Server Error :: " + error.message ,
-            { status: 500, headers: corsHeaders }
-        );
+        return NextResponse.json({ orderId: newOrder.id }, { headers: corsHeaders });
+    }
+    
+    catch (error: any) {
+        console.error("Error processing order:", error);
+        return new NextResponse("An error occurred while processing the order", {
+            status: 500,
+            headers: corsHeaders,
+        });
     }
 }

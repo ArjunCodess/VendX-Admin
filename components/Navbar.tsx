@@ -21,7 +21,7 @@ export default async function Navbar() {
 
     return (
         <div className='border-b'>
-            <div className='flex items-center h-16 px-4'>
+            <div className='flex items-center h-16 px-8'>
                 <StoreSwitcher items={userStores} />
                 <MainNav className='mx-6' />
                 <div className='flex items-center ml-auto space-x-4'>
