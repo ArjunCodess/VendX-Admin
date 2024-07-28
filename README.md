@@ -4,6 +4,9 @@
 
 Welcome to VendX: the E-Commerce Website Template with an Admin Panel!
 
+Admin Panel - https://vendx-admin.vercel.app/
+Store - https://vendx-store.vercel.app/
+
 This application provides a complete solution for managing and displaying products, categories, and orders, complete with user authentication and a fully functional admin dashboard.
 
 > **NOTE**: This project is based on a tutorial by Code With Antonio (https://youtu.be/5miHyP6lExg). 
